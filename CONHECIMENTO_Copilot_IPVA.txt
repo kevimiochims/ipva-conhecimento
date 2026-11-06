@@ -44,7 +44,7 @@ Este arquivo detalha o que as instruções resumem. Em caso de conflito, vale a 
 5. TROCA (SUBSTITUIÇÃO) DE VEÍCULO
 5.1 substituicao = Sim. placa/renavam = veículo ATUAL (o novo, objeto do pedido de isenção). placa_outro_veiculo/renavam_outro_veiculo = o veículo ANTERIOR (o que tinha a isenção e foi trocado).
 5.2 O requerente pode citar só uma das placas, ou citar as duas de forma confusa. Descubra pelo contexto: o que ele quer isentar agora (atual) e o que já tinha isenção (anterior). Use o CRLV, a data de aquisição e o extrato para decidir. Na dúvida, avise em pontos_atencao.
-5.3 Pedido de troca sem hipótese clara: use a hipótese do benefício que o veículo anterior tinha.
+5.3 A troca recebe a MESMA extração completa de uma isenção nova: laudo (tipo, médico, CRM, estabelecimento, CNES, CNPJ, CID, datas), CNES juntado, A1, A2, A6, extrato, CADIN, requerente e representação, folhas e requisitos. Nunca omita campos por ser troca. Sem hipótese informada, use a do laudo (CID F84 = Autismo; F70-F79 = Deficiência mental); sem laudo, a do benefício do veículo anterior.
 5.4 decisao_anterior só se houver no processo uma decisão ou despacho de concessão (campos protocolo, desde = ano de início, fl). Protocolo apenas citado pelo requerente, pedido antigo sem decisão ou isenção do veículo anterior NÃO são decisão: deixe vazio.
 
 6. RESTITUIÇÃO (rest_req)
@@ -78,3 +78,15 @@ R04 – Táxi: motorista profissional pessoa física; escolar: pessoa física ou
 9.4 novo_usado: "Novo" com nota fiscal 0 km ou consulta de veículo novo; ATPV/CRV, transferência ou dono anterior = "Usado"; dúvida = "". data_aquisicao = data da nota, da transferência ou da consulta.
 9.5 arrendamento: Não | Arrendamento mercantil | Alienação fiduciária.
 9.6 folhas: "fl. X" de cada documento e de cada requisito (ex.: "R06":"fl. 5"); ultima_folha; motivos: o que falta em cada requisito; pontos_atencao: até 5 itens, cada um com folha.
+
+10. O QUE PROCURAR POR TIPO DE PEDIDO (extraia sempre, mesmo que o Auditor possa dispensar a análise depois)
+10.1 Em todo pedido: requerente (rodapé), cpf_cnpj_requerente, email_requerente, beneficiario, cpf_cnpj_beneficiario, proprietario e cpf_cnpj_proprietario (CRLV/A1), placa, renavam, marca_modelo, ano_fabricacao, combustivel, potencia_cv, cilindrada_cc (moto), novo_usado, data_aquisicao, arrendamento, outros_veiculos_isentos (Sim|Não) e, se Sim, placa_outro_veiculo, renavam_outro_veiculo e data_cancelamento (quando o requerente pedir ou o processo trouxer o cancelamento da isenção do outro). R05: documento de representação (item 1). R06: CRLV, nome do proprietário. R11: A6. R12: CADIN. Cada documento com a sua folha em folhas.
+10.2 PcD (todas): item 8 inteiro, mais CNES do laudo e consultas CNES juntadas (item 2). Física: forma, incapacidade_dirigir, CNH. Visual: acuidade e campo visual. Mental/autismo/Down: tipo_laudo, CID, psicólogo. Troca de veículo PcD: a mesma extração completa.
+10.3 Táxi: R01 autorização do órgão concedente (número, validade); R04 motorista profissional pessoa física ou contrato de arrendamento; R07 categoria "aluguel" no CRLV (categoria_complementar).
+10.4 Ônibus de linha: R01 concessão/permissão (órgão, vigência); R07 tipo ônibus no CRLV; R09 linha, exclusividade no transporte coletivo. Escolar: R01 autorização do serviço escolar; R04 pessoa física ou Prefeitura; R09 uso exclusivo (categoria, placa vermelha/cor).
+10.5 Missão diplomática: R01 Carteira Diplomática, de Perito ou Identidade Consular; R04 proprietária é Missão/Repartição/Organismo; R10 reciprocidade (declaração do MRE).
+10.6 Tráfego proibido, mais de 20 anos, moto até 170 cc, trator/colheitadeira, elétrico, imposto inferior a 1 UPF, hidrogênio, gás natural: R01 documentos do veículo e do proprietário (CRLV, nota, comprovante); R07 o dado técnico que enquadra: espécie/tipo, ano_fabricacao (20 anos), cilindrada_cc (moto), combustivel (elétrico, hidrogênio, GNV), valor do imposto (1 UPF; A1 ou extrato).
+10.7 Imunidade: R01 documentos da entidade e do requerente (CNPJ, estatuto, ata); R04 natureza da entidade (lei, estatuto, certificação); R05 mandato/ato de nomeação com mandato_ate; R09 vínculo do veículo com as finalidades; R10 declaração de 2 diretores ou Anexo III (md5_anexo3).
+10.8 Baixa por apreensão: R01 ato de apreensão e de destinação; R04 destinatário (União, Estado, DF, Município); R05 interessado e mandato.
+10.9 Cessação: item 1.9; data_fato e beneficio_cessado; folha da prova (certidão de óbito, nota de venda, boletim) e A6/consulta do veículo quando houver.
+10.10 Locadora: item 7. Restituição: item 6, com todos os exercícios, valores e comprovantes (A2, guias, conta bancária).
