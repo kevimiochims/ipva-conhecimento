@@ -1,8 +1,80 @@
-CONHECIMENTO – RESTITUIÇÃO DE IPVA (rest_req)
-Use quando restituicao = Sim. Preencha rest_req com o status de cada item (Atendido | Não atendido (contraria) | Em parte | Não comprovado (ausente)) e a folha.
-R01 – Requerimento: pedido de restituição assinado pelo contribuinte (ou procurador), com conta bancária de titularidade do beneficiário (banco, agência, conta). Sem conta = Em parte.
-R02 – Pagamento: comprovante/guia do IPVA pago nos exercícios pedidos (rest_exercicios) e valor (rest_valor). Confirmar pela tela A2 "RECOLHIMENTOS".
-R07 – Ônus: o veículo não pode ter ônus que impeça a isenção/imunidade (ex.: arrendamento, alienação fiduciária conforme a hipótese). Verificar no CRLV/consulta.
-R09 – Comprovante bancário: documento do banco que comprove a conta informada no R01 (titularidade do beneficiário). Conta de terceiro = Não atendido.
-R10 – Documentos pessoais e do veículo: RG/CPF (ou CNPJ) do beneficiário, procuração se houver procurador, e CRLV do veículo.
-Observações: decisao_anterior só se houver decisão/despacho de concessão (protocolo apenas citado não é decisão). O Auditor decide; o Copilot só organiza os dados.
+CONHECIMENTO – AGENTE COPILOT IPVA PR (complemento das instruções)
+Este arquivo detalha o que as instruções resumem. Em caso de conflito, vale a instrução principal. O Auditor decide; você apenas organiza os dados.
+
+1. REQUERENTE x BENEFICIÁRIO
+1.1 Requerente é SEMPRE quem inseriu o protocolo. Onde achar:
+ - e-Protocolo: bloco "DADOS DO E-PROTOCOLO" (prevalece) ou o rodapé "Inserido ao protocolo em … por: NOME" das folhas. fonte_requerente = "Dados do e-Protocolo" ou "Rodapé fl. X".
+ - Portal IPVA / SID: o titular do requerimento anexado.
+ - Quem aparece como servidor da Receita (por ex. no despacho ou na consulta) nunca é o requerente.
+1.2 Beneficiário é quem terá o benefício: no PcD, a pessoa com deficiência (e proprietária do veículo, salvo as exceções legais); em imunidade/isenção de entidade, a entidade; na locadora, a empresa.
+1.3 Nunca preencha o requerente com o beneficiário "por padrão". Só são a mesma pessoa se o nome e o CPF do rodapé coincidirem com os do beneficiário.
+1.4 Menor de 18 anos, curatelado ou tutelado não protocola sozinho. Se o beneficiário for menor, o requerente é o pai, a mãe, o responsável ou o procurador que consta no rodapé.
+1.5 Caso real a evitar: o beneficiário era menor; havia procuração em que o pai e o filho menor (representado pelo pai) outorgavam poderes a um terceiro; quem inseriu o protocolo foi o terceiro. Resultado correto: requerente = o terceiro (outorgado); procuracao_outorgante = "NOME DO PAI; NOME DO FILHO MENOR"; procuracao_outorgado = o terceiro; documento_representacao = "Procuração"; representante conforme o documento. Resultado errado: requerente = o beneficiário.
+1.6 Procure procuração, termo de curatela/tutela/guarda ou certidão de nascimento em TODAS as folhas, não só nas primeiras. documento_representacao: Procuração | Termo de curatela | Termo de guarda | Certidão de nascimento | Contrato social / estatuto / ata | Ato de nomeação | Outro documento | Não apresentado ("Não apresentado" só depois de ver todas as folhas). Informe folhas.representacao.
+1.7 Beneficiário pessoa jurídica: requerente = o dirigente (ata, estatuto ou contrato social); fonte_requerente = "Documento fl. X"; informe mandato_ate (validade do mandato).
+1.8 Representação legal (menor, curatelado): data_nascimento_beneficiario, pai, mae, documento_filiacao (Certidão ou Identidade), tutor, curador.
+1.9 Cessação (comunicação de que o benefício acabou): data_fato; beneficio_cessado = Isenção ou Não incidência; R01 = prova do fato (certidão de óbito, nota de venda, boletim etc.).
+1.10 Documento pessoal é de quem consta nele. CNH, laudo, RG ou CRLV de procurador ou de parente NUNCA são do beneficiário. Se a CNH for de outra pessoa, cnh_nome = o nome dela e condutor = "Não condutor".
+1.11 Em dúvida sobre quem é quem: deixe o campo "" e escreva em pontos_atencao o que viu, com a folha.
+
+2. CNES: LAUDO x CONSULTAS JUNTADAS
+2.1 Os campos do laudo (estabelecimento, cnes, estabelecimento_cnpj, medico_nome, medico_crm, psicologo_nome etc.) vêm SOMENTE do laudo (cabeçalho, carimbo, assinatura). Nunca copie para eles o que veio de uma consulta feita por servidor.
+2.2 A consulta feita por servidor e juntada ao processo vai em cnes_consulta, uma entrada por consulta:
+ - estabelecimento: {"tipo":"estabelecimento","estabelecimento":"nome na consulta","cnes":"","sus":"Sim ou Não","resultado":"Encontrado ou Não encontrado","busca_por":"CNES, CNPJ ou Nome","valor_buscado":"o que o servidor digitou","folha":"fl. X"}. "sus" é o da coluna do estabelecimento (atendimento ambulatorial SUS).
+ - profissional (médico): {"tipo":"profissional","funcao":"médico","nome":"","cns":"","cbo":"","cnes":"","sus":"","resultado":"","busca_por":"","valor_buscado":"","folha":""}. "cnes" e "sus" são da linha do vínculo do profissional naquele estabelecimento.
+ - profissional (psicólogo): igual, com "funcao":"psicólogo" (CBO 2515).
+ Nunca use o SUS do profissional para o estabelecimento nem o contrário. Se faltar uma das consultas, não crie o objeto.
+2.3 Consulta "não encontrada": é comum o servidor pesquisar pelo NOME como está no laudo (incompleto ou abreviado) e o CNES não achar. Nesse caso registre resultado "Não encontrado", sus "" (não escreva "Não"), busca_por "Nome" e valor_buscado com o nome digitado. O app avisa o Auditor para refazer pelo CNES/CNPJ do laudo. Se o servidor buscou por CNES ou CNPJ, registre qual número digitou.
+2.4 Confronte sempre consulta e laudo: o CNES da consulta deve ser o do laudo; o nome do estabelecimento e o do médico/psicólogo da consulta devem ser os do laudo. Se algo não bater, escreva em pontos_atencao, por exemplo: "Consulta fl. 9: CNES 2269384 (UBS CENTRO); laudo fl. 5: CNES 2269385 (UBS NORTE)" ou "Consulta fl. 10: médico PEDRO ALVES; laudo fl. 5: JOAO SILVA". Não corrija um pelo outro.
+2.5 O CNES do laudo às vezes está manuscrito ou borrado: leia com cuidado os 7 dígitos; se não tiver certeza de um dígito, deixe "" e avise em pontos_atencao.
+
+3. TELA A6 (PROCESSOS DO RENAVAM) – COMUNICAÇÃO DE VENDA
+3.1 Copie TODAS as linhas de dados, uma por string da lista a6, sem o cabeçalho, no formato "CPF/CNPJ | P ou C | NOME | MP | DT-AQUIS" (ex.: "03312701961 | P | FULANO DE TAL | 01 | 04/09/25"). P = proprietário; C = comunicação de venda. Não resuma, não una linhas e não pule linhas antigas.
+3.2 Se a tela existe mas não dá para ler: a6 = [] e pontos_atencao "A6 ilegível, fl. X". Se não há tela A6 no processo: não preencha a6.
+3.3 Preencha também: comunicacao_venda = "Sim" se houver linha C posterior ao proprietário atual, "Não" se não houver; comunicacao_venda_data (DD/MM/AAAA) e comprador (nome da linha C). O app confere com as linhas.
+3.4 Proprietário anterior ao atual (P antes do P atual) indica veículo "Usado". Sem nota fiscal/ATPV, data_aquisicao = DT-AQUIS da linha P atual.
+
+4. A1, A2 E EXTRATO CONSOLIDADO
+4.1 A1 "CONSULTA DO I.P.V.A" (folhas.a1): proprietario, cpf_cnpj_proprietario, marca_modelo, ano_fabricacao, combustivel, potencia_cv, categoria_complementar (campo COMPLCAT; "NAO CADASTRAD" = ""). "PROPORCIONAL: VEICULO NOVO data" = novo_usado "Novo" e data_aquisicao = a data.
+4.2 A2 "RECOLHIMENTOS" (folhas.a2): pagamentos por exercício. "NÃO HÁ PAGAMENTOS" = nenhum pagamento.
+4.3 Extrato Consolidado (folhas.extrato): como A1; "proporcional - veículo novo" = "Novo".
+4.4 ja_pagou do exercício pedido (sem pedido: o da aquisição ou o atual): Sim (pendente 0) | Parcial | Não; exercicios_pagos = anos quitados. Sem tela/extrato: "".
+4.5 cadin = "Sem registro" ou "Com registro"; cadin_inclusao; folhas.cadin. CNPJ (tela da RFB): cnae_principal e folhas.cnpj.
+
+5. TROCA (SUBSTITUIÇÃO) DE VEÍCULO
+5.1 substituicao = Sim. placa/renavam = veículo ATUAL (o novo, objeto do pedido de isenção). placa_outro_veiculo/renavam_outro_veiculo = o veículo ANTERIOR (o que tinha a isenção e foi trocado).
+5.2 O requerente pode citar só uma das placas, ou citar as duas de forma confusa. Descubra pelo contexto: o que ele quer isentar agora (atual) e o que já tinha isenção (anterior). Use o CRLV, a data de aquisição e o extrato para decidir. Na dúvida, avise em pontos_atencao.
+5.3 Pedido de troca sem hipótese clara: use a hipótese do benefício que o veículo anterior tinha.
+5.4 decisao_anterior só se houver no processo uma decisão ou despacho de concessão (campos protocolo, desde = ano de início, fl). Protocolo apenas citado pelo requerente, pedido antigo sem decisão ou isenção do veículo anterior NÃO são decisão: deixe vazio.
+
+6. RESTITUIÇÃO (rest_req)
+Preencha rest_exercicios, rest_valor e rest_req com o status e a folha de cada item (Atendido | Não atendido (contraria) | Em parte | Não comprovado (ausente)):
+R01 – Requerimento: pedido de restituição assinado pelo contribuinte (ou procurador), com identificação, endereço, e-mail, telefone e conta bancária de titularidade do beneficiário. Sem a conta = Em parte.
+R02 – Pagamento: guia/comprovante do IPVA pago nos exercícios pedidos e o valor; confira na tela A2.
+R07 – Ônus: veículo sem ônus que impeça o benefício (arrendamento, alienação fiduciária conforme a hipótese); táxi: categoria aluguel; locadora: complemento "locação" no CRLV.
+R09 – Comprovante bancário: documento do banco que comprove a conta do R01 (titularidade do beneficiário). Conta de terceiro = Não atendido. Para ônibus/escolar: uso exclusivo; partido, sindicato e educação: declaração do R10; locadora: Anexo II.
+R10 – Documentos pessoais e do veículo: RG/CPF (ou CNPJ), procuração se houver procurador, CRLV; partido/sindicato/educação: declaração de 2 diretores, reciprocidade MRE ou Anexo III com código MD5 (md5_anexo3) e assinatura digital ou firma.
+R04 – Táxi: motorista profissional pessoa física; escolar: pessoa física ou Prefeitura; sindicato: de TRABALHADORES; educação: CEBAS vigente.
+
+7. LOCADORA
+7.1 cnae_principal, cnae_desde, cnaes_secundarios, frota_locacao (a declarada), periodo_analise e indicios_atividade (até 6 fatos objetivos com fl., sem concluir se é locadora).
+7.2 notificacao = {"numero":"","data":"","resposta":"Apresentou todos | parte | (vazio)","folhas_resposta":""}. Se o processo já contém uma notificação da Receita, preencha numero e data. Se contém também a resposta da empresa (documentos juntados depois da notificação), leia-a: resposta = "Apresentou todos" se os documentos pedidos foram todos apresentados, "parte" se só alguns; folhas_resposta = as folhas da resposta. Se NADA foi juntado depois da notificação, deixe resposta "" (vazia): o prazo pode ainda estar correndo e quem decide a falta de resposta é o Auditor. Nunca escreva "Não respondeu". Releia o processo inteiro e atualize os requisitos considerando os documentos novos.
+7.3 veiculos = [{"placa":"","renavam":"","anexo_ii":["2025"]}]: os veículos do pedido, com os anos do demonstrativo (Anexo II) em que aparecem. A frota e as alíquotas vêm da consulta ao banco (BI): não extraia.
+7.4 R01 da locadora: contrato social + DRE/DEFIS dos últimos 5 anos + relação dos veículos não destinados à locação (faltou um dos três = Em parte).
+
+8. LAUDO (PcD) – CAMPOS
+8.1 tipo_laudo: DETRAN/PR – perícia médica | Médico – outra especialidade | Médico oftalmologista | Médico psiquiatra ou neurologista | Médico e psicólogo | Não apresentado. Neuropediatra, neuropsiquiatra e semelhantes contam como "Médico psiquiatra ou neurologista".
+8.2 emitente_laudo: Serviço público de saúde | Estabelecimento privado | DETRAN/PR | Não informado.
+8.3 CID: procure em TODAS as folhas do laudo/relatório (campos CID, CID-10, Dx, HD, diagnóstico, hipótese diagnóstica, carimbo, manuscrito). Formato F84.0 (se vier F840, escreva F84.0). Vários códigos: separe por "; ". Copie como está escrito; NUNCA deduza o CID pelo nome da doença. Sem código em lugar nenhum: cid = "" e pontos_atencao "CID não localizado (fls. X a Y)".
+8.4 medico_crm: só o número que vem junto de "CRM"; RMS: "RMS 12345". medico_uf, medico_cpf, medico_nome, psicologo_nome, psicologo_crp, paciente_laudo (nome do paciente no laudo), data_laudo.
+8.5 forma_assinalada: a opção marcada com X; forma_deficiencia_fisica: texto; acuidade_melhor_olho; campo_visual_graus; visao_monocular; incapacidade_dirigir (deficiência física: "Não" só se o laudo negar limitação).
+8.6 deficiencia_permanente = "Sim" só se o laudo disser permanente ou congênita. condutor = "Condutor" só com CNH do beneficiário ou laudo do DETRAN; menor de 18 anos e demais casos = "Não condutor".
+8.7 formalidades_ausentes: "deficiência" ou "rasura, sinal de adulteração ou letra ilegível".
+
+9. OUTROS CAMPOS
+9.1 canal = "e-Protocolo" quando houver rodapé "Inserido ao protocolo"; senão "Portal IPVA / SID". data_pedido = data da 1ª inserção ou do requerimento.
+9.2 exercicio_pretendido: somente se o requerente escrever o exercício que deseja; não deduza de telas, aquisição ou datas.
+9.3 prints_portal = "Sim" só se houver print do erro do Portal IPVA (descreva em prints_evidencia e a folha); sem print no processo = "Não".
+9.4 novo_usado: "Novo" com nota fiscal 0 km ou consulta de veículo novo; ATPV/CRV, transferência ou dono anterior = "Usado"; dúvida = "". data_aquisicao = data da nota, da transferência ou da consulta.
+9.5 arrendamento: Não | Arrendamento mercantil | Alienação fiduciária.
+9.6 folhas: "fl. X" de cada documento e de cada requisito (ex.: "R06":"fl. 5"); ultima_folha; motivos: o que falta em cada requisito; pontos_atencao: até 5 itens, cada um com folha.
