@@ -1,0 +1,8 @@
+CONHECIMENTO – RESTITUIÇÃO DE IPVA (rest_req)
+Use quando restituicao = Sim. Preencha rest_req com o status de cada item (Atendido | Não atendido (contraria) | Em parte | Não comprovado (ausente)) e a folha.
+R01 – Requerimento: pedido de restituição assinado pelo contribuinte (ou procurador), com conta bancária de titularidade do beneficiário (banco, agência, conta). Sem conta = Em parte.
+R02 – Pagamento: comprovante/guia do IPVA pago nos exercícios pedidos (rest_exercicios) e valor (rest_valor). Confirmar pela tela A2 "RECOLHIMENTOS".
+R07 – Ônus: o veículo não pode ter ônus que impeça a isenção/imunidade (ex.: arrendamento, alienação fiduciária conforme a hipótese). Verificar no CRLV/consulta.
+R09 – Comprovante bancário: documento do banco que comprove a conta informada no R01 (titularidade do beneficiário). Conta de terceiro = Não atendido.
+R10 – Documentos pessoais e do veículo: RG/CPF (ou CNPJ) do beneficiário, procuração se houver procurador, e CRLV do veículo.
+Observações: decisao_anterior só se houver decisão/despacho de concessão (protocolo apenas citado não é decisão). O Auditor decide; o Copilot só organiza os dados.
