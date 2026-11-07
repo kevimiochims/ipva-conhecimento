@@ -19,7 +19,7 @@ Este arquivo detalha o que as instruções resumem. Em caso de conflito, vale a 
 
 2. CNES: LAUDO x CONSULTAS JUNTADAS
 2.1 Os campos do laudo (estabelecimento, cnes, estabelecimento_cnpj, medico_nome, medico_crm, psicologo_nome etc.) vêm SOMENTE do laudo (cabeçalho, carimbo, assinatura). Nunca copie para eles o que veio de uma consulta feita por servidor.
-2.2 A consulta feita por servidor e juntada ao processo vai em cnes_consulta, uma entrada por consulta:
+2.2 A consulta feita por servidor e juntada ao processo vai em cnes_consulta, uma entrada por consulta. Percorra TODAS as folhas: o processo pode ter várias consultas do estabelecimento (de outros CNES, repetidas, uma errada e outra certa) e várias do profissional. Liste todas, cada uma com a sua folha, sem escolher nem descartar nenhuma: quem decide qual vale (a do CNES do laudo) é o app. Uma consulta de outro CNES é só uma entrada a mais:
  - estabelecimento: {"tipo":"estabelecimento","estabelecimento":"nome na consulta","cnes":"","sus":"Sim ou Não","resultado":"Encontrado ou Não encontrado","busca_por":"CNES, CNPJ ou Nome","valor_buscado":"o que o servidor digitou","folha":"fl. X"}. "sus" é o da coluna do estabelecimento (atendimento ambulatorial SUS).
  - profissional (médico): {"tipo":"profissional","funcao":"médico","nome":"","cns":"","cbo":"","cnes":"","sus":"","resultado":"","busca_por":"","valor_buscado":"","folha":""}. "cnes" e "sus" são da linha do vínculo do profissional naquele estabelecimento.
  - profissional (psicólogo): igual, com "funcao":"psicólogo" (CBO 2515).
@@ -90,3 +90,11 @@ R04 – Táxi: motorista profissional pessoa física; escolar: pessoa física ou
 10.8 Baixa por apreensão: R01 ato de apreensão e de destinação; R04 destinatário (União, Estado, DF, Município); R05 interessado e mandato.
 10.9 Cessação: item 1.9; data_fato e beneficio_cessado; folha da prova (certidão de óbito, nota de venda, boletim) e A6/consulta do veículo quando houver.
 10.10 Locadora: item 7. Restituição: item 6, com todos os exercícios, valores e comprovantes (A2, guias, conta bancária).
+
+11. PAGINAS: INVENTÁRIO DE FOLHAS
+11.1 Além dos campos de sempre, devolva paginas = lista com UMA entrada por documento encontrado no PDF, cada uma com a sua folha. Percorra todas as folhas e classifique cada uma; não pule uma folha por já haver outra do mesmo assunto.
+11.2 Entrada: {"tipo":"","folha":"fl. X","placa":"","renavam":"","nome":"","doc":"","data":"","obs":""}. tipo: a1 | a2 | a6 | extrato | crlv | procuracao | laudo | cnh | cadin | cnpj | sgt | identidade | outro.
+11.3 placa e renavam: os da tela ou do CRLV daquela folha (A1, A2, A6, extrato, CRLV), mesmo que sejam de outro veículo. nome: o titular do documento (proprietário no A1/CRLV; outorgante na procuração, com os outorgados em obs; paciente no laudo; titular da CNH). data: emissão do laudo, da procuração ou da consulta. obs: só o que ajuda a distinguir (ex.: "vencida", "veículo anterior", "cópia ilegível").
+11.4 Várias folhas do mesmo tipo são normais (um A1 de cada veículo, duas procurações, laudo e relatório complementar, extrato antigo e novo). Liste todas. Os campos do pedido (proprietario, a6, ja_pagou etc.) vêm da folha da placa/pessoa do pedido; se a folha de outro veículo for a única, não use seus dados e avise em pontos_atencao. O app cruza paginas com o pedido e avisa o Auditor se a folha usada não for a certa.
+11.5 CNES juntado continua em cnes_consulta (item 2); não repita em paginas, exceto como tipo outro se precisar.
+
