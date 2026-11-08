@@ -4,7 +4,7 @@ Este arquivo detalha o que as instruções resumem. Em caso de conflito, vale a 
 1. REQUERENTE x BENEFICIÁRIO
 1.1 Requerente é SEMPRE quem inseriu o protocolo. Onde achar:
  - e-Protocolo: bloco "DADOS DO E-PROTOCOLO" (prevalece) ou o rodapé "Inserido ao protocolo em … por: NOME" das folhas. fonte_requerente = "Dados do e-Protocolo" ou "Rodapé fl. X".
- - Portal IPVA / SID: o titular do requerimento anexado.
+ - Portal IPVA: o titular do requerimento anexado.
  - Quem aparece como servidor da Receita (por ex. no despacho ou na consulta) nunca é o requerente.
 1.2 Beneficiário é quem terá o benefício: no PcD, a pessoa com deficiência (e proprietária do veículo, salvo as exceções legais); em imunidade/isenção de entidade, a entidade; na locadora, a empresa.
 1.3 Nunca preencha o requerente com o beneficiário "por padrão". Só são a mesma pessoa se o nome e o CPF do rodapé coincidirem com os do beneficiário.
@@ -47,14 +47,20 @@ Este arquivo detalha o que as instruções resumem. Em caso de conflito, vale a 
 5.3 A troca recebe a MESMA extração completa de uma isenção nova: laudo (tipo, médico, CRM, estabelecimento, CNES, CNPJ, CID, datas), CNES juntado, A1, A2, A6, extrato, CADIN, requerente e representação, folhas e requisitos. Nunca omita campos por ser troca. Sem hipótese informada, use a do laudo (CID F84 = Autismo; F70-F79 = Deficiência mental); sem laudo, a do benefício do veículo anterior.
 5.4 decisao_anterior só se houver no processo uma decisão ou despacho de concessão (campos protocolo, desde = ano de início, fl). Protocolo apenas citado pelo requerente, pedido antigo sem decisão ou isenção do veículo anterior NÃO são decisão: deixe vazio.
 
-6. RESTITUIÇÃO (rest_req)
-Preencha rest_exercicios, rest_valor e rest_req com o status e a folha de cada item (Atendido | Não atendido (contraria) | Em parte | Não comprovado (ausente)):
-R01 – Requerimento: pedido de restituição assinado pelo contribuinte (ou procurador), com identificação, endereço, e-mail, telefone e conta bancária de titularidade do beneficiário. Sem a conta = Em parte.
-R02 – Pagamento: guia/comprovante do IPVA pago nos exercícios pedidos e o valor; confira na tela A2.
-R07 – Ônus: veículo sem ônus que impeça o benefício (arrendamento, alienação fiduciária conforme a hipótese); táxi: categoria aluguel; locadora: complemento "locação" no CRLV.
-R09 – Comprovante bancário: documento do banco que comprove a conta do R01 (titularidade do beneficiário). Conta de terceiro = Não atendido. Para ônibus/escolar: uso exclusivo; partido, sindicato e educação: declaração do R10; locadora: Anexo II.
-R10 – Documentos pessoais e do veículo: RG/CPF (ou CNPJ), procuração se houver procurador, CRLV; partido/sindicato/educação: declaração de 2 diretores, reciprocidade MRE ou Anexo III com código MD5 (md5_anexo3) e assinatura digital ou firma.
+6. RESTITUIÇÃO (arts. 56 a 61 da Res. SEFA 135/2021)
+Preencha rest_exercicios (anos pedidos), rest_valor, rest_motivo (Benefício (isenção/imunidade) reconhecido para exercício pago | Pagamento em duplicidade | Pagamento a maior | Roubo ou furto do veículo | Extorsão, estelionato ou apropriação indébita | Baixa do veículo (proporcional ao período) | Outro motivo), rest_conta_do_requerente (Sim se a conta ou chave PIX indicada é do próprio requerente; Não se é de outra pessoa; "" se não der para saber) e rest_req com o status e a folha de cada item (Atendido | Não atendido (contraria) | Em parte | Não comprovado (ausente)):
+R01 – Requerimento (formulário "Pedido de Restituição do IPVA"): assinado pelo requerente ou procurador, com identificação, endereço residencial, e-mail, telefone, exercícios e valores e a conta para o depósito (corrente ou poupança) ou chave PIX com o CPF/CNPJ do requerente. Faltando algum desses dados = Em parte.
+R02 – Pagamento: guia/comprovante de cada exercício pedido, ou o pagamento na tela A2/extrato (se constar do sistema, o comprovante é dispensado). Anote em pontos_atencao a data de cada pagamento encontrado (o direito de pedir a restituição se extingue 5 anos após o pagamento).
+R07 – Ônus financeiro: prova de que o requerente arcou com o pagamento (comprovante em nome dele, débito na conta dele). Atendido sem prova se o requerente era o proprietário ou arrendatário do veículo na data do pagamento, ou se o pagamento foi feito com créditos do Nota Paraná.
+R09 – Comprovante bancário: documento do banco (extrato, cartão, declaração ou print do aplicativo) com o nome do titular, a agência e a conta. Conta de outra pessoa = Não atendido. Conta só escrita no requerimento não basta.
+R10 – Documentos: documento pessoal do requerente e do beneficiário (se for outra pessoa) e os dados do veículo (CRLV, placa, RENAVAM); procuração com firma reconhecida se houver procurador.
+Roubo ou furto: indique em pontos_atencao o boletim de ocorrência (fl.); extorsão, estelionato ou apropriação indébita: o inquérito policial; fato com mais de 1 mês antes do pedido: a declaração de não localização do veículo.
+
+6.2 OS MESMOS CÓDIGOS EM OUTRAS HIPÓTESES (não são da restituição)
 R04 – Táxi: motorista profissional pessoa física; escolar: pessoa física ou Prefeitura; sindicato: de TRABALHADORES; educação: CEBAS vigente.
+R07 – Característica do veículo: sem ônus que impeça o benefício (arrendamento, alienação fiduciária conforme a hipótese); táxi: categoria aluguel; locadora: complemento "locação" no CRLV.
+R09 – Uso: ônibus/escolar: uso exclusivo; partido, sindicato e educação: declaração do R10; locadora: Anexo II.
+R10 – Partido/sindicato/educação: declaração de 2 diretores, reciprocidade MRE ou Anexo III com código MD5 (md5_anexo3) e assinatura digital ou firma.
 
 7. LOCADORA
 7.1 cnae_principal, cnae_desde, cnaes_secundarios, frota_locacao (a declarada), periodo_analise e indicios_atividade (até 6 fatos objetivos com fl., sem concluir se é locadora).
@@ -72,7 +78,7 @@ R04 – Táxi: motorista profissional pessoa física; escolar: pessoa física ou
 8.7 formalidades_ausentes: "deficiência" ou "rasura, sinal de adulteração ou letra ilegível".
 
 9. OUTROS CAMPOS
-9.1 canal = "e-Protocolo" quando houver rodapé "Inserido ao protocolo"; senão "Portal IPVA / SID". data_pedido = data da 1ª inserção ou do requerimento.
+9.1 canal = "e-Protocolo" quando houver rodapé "Inserido ao protocolo"; senão "Portal IPVA". data_pedido = data da 1ª inserção ou do requerimento.
 9.2 exercicio_pretendido: somente se o requerente escrever o exercício que deseja; não deduza de telas, aquisição ou datas.
 9.3 prints_portal = "Sim" só se houver print do erro do Portal IPVA (descreva em prints_evidencia e a folha); sem print no processo = "Não".
 9.4 novo_usado: "Novo" com nota fiscal 0 km ou consulta de veículo novo; ATPV/CRV, transferência ou dono anterior = "Usado"; dúvida = "". data_aquisicao = data da nota, da transferência ou da consulta.
