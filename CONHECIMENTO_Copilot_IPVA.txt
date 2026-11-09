@@ -65,7 +65,7 @@ R10 – Partido/sindicato/educação: declaração de 2 diretores, reciprocidade
 7. LOCADORA
 7.1 cnae_principal, cnae_desde, cnaes_secundarios, frota_locacao (a declarada), periodo_analise e indicios_atividade (até 6 fatos objetivos com fl., sem concluir se é locadora).
 7.2 Notificação da Receita e resposta da empresa: use andamento (item 13). Se a empresa respondeu, releia o processo inteiro e atualize os requisitos considerando os documentos novos.
-7.3 veiculos = [{"placa":"","renavam":"","anexo_ii":["2025"]}]: os veículos do pedido, com os anos do demonstrativo (Anexo II) em que aparecem. A frota e as alíquotas vêm da consulta ao banco (BI): não extraia.
+7.3 veiculos = [{"placa":"","renavam":"","anexo_ii":["2025"]}]: SÓ os veículos objeto do pedido (requerimento e demonstrativo do Anexo II), com os anos do Anexo II em que aparecem. Veículos que aparecem só em consultas juntadas (BI, SGT, extratos, relação de veículos não destinados à locação) NÃO entram aqui. A frota e as alíquotas vêm da consulta ao banco (BI): não extraia.
 7.4 R01 da locadora: contrato social + DRE/DEFIS dos últimos 5 anos + relação dos veículos não destinados à locação (faltou um dos três = Em parte).
 
 8. LAUDO (PcD) – CAMPOS
