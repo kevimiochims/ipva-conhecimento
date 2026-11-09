@@ -64,7 +64,7 @@ R10 – Partido/sindicato/educação: declaração de 2 diretores, reciprocidade
 
 7. LOCADORA
 7.1 cnae_principal, cnae_desde, cnaes_secundarios, frota_locacao (a declarada), periodo_analise e indicios_atividade (até 6 fatos objetivos com fl., sem concluir se é locadora).
-7.2 notificacao = {"numero":"","data":"","resposta":"Apresentou todos | parte | (vazio)","folhas_resposta":""}. Se o processo já contém uma notificação da Receita, preencha numero e data. Se contém também a resposta da empresa (documentos juntados depois da notificação), leia-a: resposta = "Apresentou todos" se os documentos pedidos foram todos apresentados, "parte" se só alguns; folhas_resposta = as folhas da resposta. Se NADA foi juntado depois da notificação, deixe resposta "" (vazia): o prazo pode ainda estar correndo e quem decide a falta de resposta é o Auditor. Nunca escreva "Não respondeu". Releia o processo inteiro e atualize os requisitos considerando os documentos novos.
+7.2 Notificação da Receita e resposta da empresa: use andamento (item 13). Se a empresa respondeu, releia o processo inteiro e atualize os requisitos considerando os documentos novos.
 7.3 veiculos = [{"placa":"","renavam":"","anexo_ii":["2025"]}]: os veículos do pedido, com os anos do demonstrativo (Anexo II) em que aparecem. A frota e as alíquotas vêm da consulta ao banco (BI): não extraia.
 7.4 R01 da locadora: contrato social + DRE/DEFIS dos últimos 5 anos + relação dos veículos não destinados à locação (faltou um dos três = Em parte).
 
@@ -111,3 +111,10 @@ R10 – Partido/sindicato/educação: declaração de 2 diretores, reciprocidade
 12.4 CID: se o laudo, o relatório ou outro documento do beneficiário (carteira do autista, por exemplo) trazem códigos diferentes, coloque TODOS no campo cid, separados por "; " (ex.: "F84.1; F84.0"). Códigos parecidos não são erro de leitura.
 12.5 Mesmo número em dois lugares com valores diferentes (formulário digitado x carimbo): preencha o digitado e descreva a diferença em pontos_atencao.
 12.6 Por quê: um número de busca errado leva a consulta (CFM, CNES) para outra pessoa; um campo vazio o app completa pelas consultas. Fora desses números, ler e preencher é o normal.
+
+13. ANDAMENTO DO PROTOCOLO (diligência, notificação, resposta, arquivamento)
+13.1 Em todo pedido devolva andamento = {"diligencia_numero":"","diligencia_data":"","prazo_dias":"","resposta":"","folhas_resposta":"","arquivado_em":"","motivo_arquivamento":""}. Vale para a diligência (isenções, imunidades, restituição) e para a notificação (locadora). Sem diligência nem arquivamento: tudo "".
+13.2 Diligência ou notificação da Receita DESTE protocolo: diligencia_numero (n.º do despacho/notificação), diligencia_data (data da emissão ou do envio) e prazo_dias como escrito (ex.: "15", "10 úteis", "30 corridos").
+13.3 resposta: "Apresentou todos" se o que foi pedido foi juntado depois da diligência/notificação; "Apresentou parte" se só uma parte; "Sem resposta" se NADA foi juntado depois dela (o app confere se o prazo já venceu antes de usar); folhas_resposta = folhas dos documentos da resposta.
+13.4 arquivado_em: data do arquivamento DESTE protocolo (despacho, termo ou andamento de arquivamento), com motivo_arquivamento como escrito (ex.: "ausência de resposta à diligência", "desistência", "deferido"). Arquivamento de outro protocolo citado não entra aqui.
+13.5 Escreva também o andamento em observacoes, em uma frase (ex.: "Diligência de 15/10/2026, prazo de 15 dias, sem resposta; protocolo arquivado em 03/11/2026 por ausência de resposta.").
