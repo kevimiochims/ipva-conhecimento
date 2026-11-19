@@ -140,3 +140,17 @@ Troca de táxi: a tela A1 pode mostrar evento de isenção de táxi (ex.: evento
 14. CONSULTA AO BANCO DE DADOS (feita depois, fora do Copilot)
 14.1 Depois da sua leitura, o JSON é completado por uma consulta ao banco de dados da Receita, no bloco "banco" (veículos e benefícios das pessoas, outros protocolos, CADIN). NÃO crie o bloco "banco" e não escreva em pontos_atencao ou motivos o que só o sistema mostraria (isenção de outro veículo, benefício implantado, outros protocolos), a menos que a tela esteja juntada ao processo.
 14.2 Continue preenchendo normalmente o que estiver nas folhas (A1, A2, A6, extrato, CADIN juntado): a consulta posterior não apaga o que veio do processo; o app compara os dois e avisa as diferenças.
+
+15. LEILÃO E DESVINCULAÇÃO DE DÉBITOS POR ORDEM JUDICIAL
+15.1 Hipóteses: veículo arrematado em leilão, com pedido para tirar do veículo os débitos de IPVA anteriores à arrematação = "Leilão – Arrematação". Ofício, mandado ou decisão judicial que manda desvincular débitos do veículo (adjudicação, perdimento, alienação antecipada ou outra ordem) = "Desvinculação – Ordem judicial". Veículo apreendido e DOADO a ente público (sem leilão) continua "Baixa – Veículo apreendido".
+15.2 Partes: beneficiario e cpf_cnpj_beneficiario = o arrematante (ou o adjudicatário). requerente = quem protocolou. Se a ordem veio do próprio juízo (ofício enviado pela vara), ordem_do_juizo = "Sim" e requerente = o juízo.
+15.3 Chaves (todas, "" se não houver):
+- leilao_tipo: "Com perdimento" (veículo apreendido por polícia, Receita Federal ou outro órgão e perdido em favor do Poder Público antes do leilão) | "Sem perdimento" (veículo removido ao pátio do DETRAN ou de outro órgão e não retirado pelo dono, que podia retirá-lo pagando) | "Judicial" (leilão em execução, veículo penhorado ou dado em garantia) | "Particular" (leilão de financeira, seguradora, empresa ou leiloeiro sem ordem judicial nem órgão público).
+- data_apreensao, data_perdimento (data da decisão de perdimento), data_arrematacao (data do leilão/arremate), valor_arrematacao.
+- orgao_leilao: órgão que fez o leilão, leiloeiro ou juízo (vara). processo_judicial: número dos autos.
+- documento_leilao: "Carta de arrematação" | "Auto de arrematação" | "Documento do órgão que realizou o leilão" (nota de venda, termo, edital com o lote) | "Ofício ou mandado judicial" | "Carta de adjudicação" | "Não apresentado". Folha em folhas.R01.
+- ato_apreensao_no_processo: "Sim" se há no processo o ato de apreensão e a decisão de perdimento (ou de destinação); "Não" se o leilão é com perdimento e esses documentos não estão no processo.
+- veiculo_identificado: "Sim" se o documento da arrematação ou a ordem judicial traz a placa, o RENAVAM ou o chassi do veículo do pedido; "Não" se não traz ou traz outro veículo.
+- proprietario_anterior e cpf_cnpj_proprietario_anterior: o dono do veículo antes da arrematação (CRLV antigo, A6, edital, ordem judicial).
+- exercicios_desvincular: só na ordem judicial, os exercícios ou o período que a ordem manda desvincular (ex.: "2019 a 2023"), como escrito na ordem.
+15.4 Não decida o resultado: o app classifica os débitos pelas datas (antes da apreensão, entre a apreensão e a arrematação, depois da arrematação). Não crie lista de débitos: os débitos por exercício vêm da consulta ao banco de dados.
